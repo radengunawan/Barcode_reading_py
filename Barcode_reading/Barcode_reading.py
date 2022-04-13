@@ -18,7 +18,7 @@ import cv2
 import glob
 from tqdm import tqdm
 
-path = r'C:\Users\sendr\Documents\Proj_Massive_Barcode_Reading\Product_A\data_barcode\train\images\Source\*.jpg'
+path = r'D:\Raw_Data\Training_Bulk3\source\*.jpg'
 files = glob.glob(path)
 
 
@@ -57,9 +57,9 @@ for file in tqdm(files):
     source = file
 
     if (len(barcodes)!= 0):
-        destination = source.replace('\\Product_A\\data_barcode\\train\\images\\Source\\','\\Product_A\\data_barcode\\train\\images\\Barcodes\\')
+       destination = source.replace('\\source\\','\\barcodes\\')
     else:
-        destination = source.replace('\\Product_A\\data_barcode\\train\\images\\Source\\','\\Product_A\\data_barcode\\train\\images\\NoBarcodes\\')
+        destination = source.replace('\\source\\','\\nobarcodes\\')
 
     destination = destination.removesuffix('.jpg') + "_result.jpg"
 
