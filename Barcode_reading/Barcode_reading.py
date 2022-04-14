@@ -18,13 +18,15 @@ import cv2
 import glob
 from tqdm import tqdm
 
-path = r'D:\Raw_Data\Training_Bulk3\source\*.jpg'
-files = glob.glob(path)
+path_ori = r'D:\Raw_Data\Training_Bulk3\source\*.jpg'
+files_ori = glob.glob(path_ori)
 
+path_testimage = path_ori
+files_testimage = files_ori
 
 i = 0
 
-for file in tqdm(files):
+for file in tqdm(files_ori):
     
     image = cv2.imread(file)
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -34,6 +36,7 @@ for file in tqdm(files):
     image_sharp = cv2.filter2D(src=bimage, ddepth=-1, kernel=kernel)
     barcodes = pyzbar.decode(image_sharp)
 
+    '''
     list_barcodeData = []
     list_barcodeType = []
 
@@ -46,11 +49,12 @@ for file in tqdm(files):
 
         barcodeType = barcode.type
         list_barcodeType.append(barcodeType)
+    '''
 
         #print (barcodeData+barcodeType)
 
-        text = "{} ({})".format(barcodeData, barcodeType)
-        cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        #text = "{} ({})".format(barcodeData, barcodeType)
+        #cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             
     i += 1 
         #print("Progress: ", i/len(files))
@@ -58,10 +62,13 @@ for file in tqdm(files):
 
     if (len(barcodes)!= 0):
        destination = source.replace('\\source\\','\\barcodes\\')
-    else:
-        destination = source.replace('\\source\\','\\nobarcodes\\')
+       destination = destination.removesuffix('.jpg') + "_result.jpg"
+       cv2.imwrite(destination, image)
+       cv2.waitKey(0)
+    #else:
+    #    destination = source.replace('\\source\\','\\nobarcodes\\')
 
-    destination = destination.removesuffix('.jpg') + "_result.jpg"
+   # destination = destination.removesuffix('.jpg') + "_result.jpg"
 
-    cv2.imwrite(destination, image)
-    cv2.waitKey(0)
+   # cv2.imwrite(destination, image)
+   # cv2.waitKey(0)
